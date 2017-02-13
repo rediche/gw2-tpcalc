@@ -7,7 +7,8 @@
     "gw2-coin-input": "^0.1.2",
     "gw2-coin-output": "^0.1.2",
     "iron-media-query": "^1.0.8",
-    "polymer-cookie": "^1.1.1"
+    "polymer-cookie": "^1.1.1",
+    "paper-input": "PolymerElements/paper-input#^1.1.23"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
