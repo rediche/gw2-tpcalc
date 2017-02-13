@@ -1,0 +1,271 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../polymer-cookie/polymer-cookie.html">
+<link rel="import" href="../gw2-coin-input/gw2-coin-input.html">
+<link rel="import" href="../gw2-coin-output/gw2-coin-output.html">
+<link rel="import" href="../iron-media-query/iron-media-query.html">
+
+<!--
+`gw2-tpcalc`
+Renders a paper style Trading Post Calculator for Guild Wars 2.
+
+@demo demo/index.html 
+-->
+
+<dom-module id="gw2-tpcalc">
+  <template>
+    <style>
+      :host {
+        display: block;        
+      }
+
+      h2 {
+        text-transform: uppercase;
+        font-size: 1rem;
+        font-weight: 100;
+        margin: 0;
+      }
+
+      .row {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .row[wide-layout] {
+        flex-direction: row;
+        justify-content: space-between;
+      }
+
+      .column {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .row[wide-layout] .column {
+        flex-basis: calc(50% - .5rem);
+      }
+
+      .card {
+        background-color: var(--gw2-tpcalc-card-background-color, #EEEEEE);
+        border-radius: .1rem;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.12), 
+                    0 1px 2px rgba(0,0,0,0.24);
+        color: var(--gw2-tpcalc-card-color, #000000);
+        margin-bottom: 1rem;
+        padding: .5rem;
+      }
+
+      .card p:last-child {
+        margin-bottom: 0;
+      }
+
+      .row[wide-layout] .results {
+        height: 100%;
+      }
+
+      .results p {
+        margin: .5rem 0;
+      }
+
+      .results p:first-of-type {
+        margin-top: 1rem;
+      }
+
+      .changemode {
+        text-align: center;
+        margin-top: 0;
+      }
+
+      .changemode span {
+        font-size: 80%;
+        text-decoration: underline;
+        cursor: pointer;
+      }
+
+    </style>
+
+    <polymer-cookie
+      name="isEvonGnashblade"
+      value="[[ isEvonGnashblade ]]"
+      path="/"
+      time="-1"
+      id="isEvonGnashbladeCookie"></polymer-cookie>
+
+    <iron-media-query
+      query="(min-width: 600px)"
+      query-matches="{{ isWide }}"></iron-media-query>
+
+    <div class="row" wide-layout$="{{ isWide }}">
+      <div class="column">
+        
+        <div class="card">
+          <h2>Buy Price</h2>
+          <gw2-coin-input 
+            is-single-input="{{ isEvonGnashblade }}" 
+            coin-string="{{ buyPrice }}"></gw2-coin-input>
+        </div>
+
+        <div class="card">
+          <h2>Sell Price</h2>
+          <gw2-coin-input 
+            is-single-input="{{ isEvonGnashblade }}" 
+            coin-string="{{ sellPrice }}"></gw2-coin-input>
+        </div>
+
+        <div class="card">
+          <div class="input-list">
+            <paper-input 
+              label="Quantity"
+              always-float-label
+              type="tel"
+              allowed-pattern="^\d*\.?\d+$"
+              maxlength="7"
+              value="{{ quantity }}"></paper-input>
+          </div>
+        </div>
+
+      </div>
+      <div class="column">
+
+        <div class="card results">
+          <h2>Result</h2>
+          <p><strong>Cost:</strong> 
+             <gw2-coin-output coin-string="[[ cost ]]"></gw2-coin-output></p>
+          <p><strong>Listing Fee:</strong> 
+             <gw2-coin-output coin-string="[[ listingFee ]]"></gw2-coin-output></p>
+          <p><strong>Selling Fee:</strong> 
+             <gw2-coin-output coin-string="[[ sellingFee ]]"></gw2-coin-output></p>
+          <p><strong>Profit:</strong> 
+             <gw2-coin-output coin-string="[[ profit ]]"></gw2-coin-output></p>
+        </div> 
+
+      </div>
+    </div>
+
+    <p class="changemode">
+      <span on-tap="changeMode">
+        <template is="dom-if" if="{{ !_isEvonGnashblade(isEvonGnashblade) }}">
+          Enable
+        </template>
+        <template is="dom-if" if="{{ _isEvonGnashblade(isEvonGnashblade) }}">
+          Disable
+        </template>
+        Evon Gnashblade Mode</span>
+    </p>
+
+  </template>
+
+  <script>
+    Polymer({
+
+      is: 'gw2-tpcalc',
+
+      properties: {
+        buyPrice: Number,
+        sellPrice: Number,
+        cost: Number,
+        listingFee: Number,
+        sellingFee: Number,
+        profit: Number,
+        quantity: {
+          type: Number,
+          value: 1
+        },
+        isEvonGnashblade: {
+          type: Boolean,
+          observer: '_isEvonGnashbladeChanged'
+        },
+        isWide: Boolean
+      },
+
+      ready: function() {
+        // Important for this to remain a string check as the cookie value is a saved string.
+        if(this.$.isEvonGnashbladeCookie.readCookie() == "true") {
+          this.set('isEvonGnashblade', true);
+        } else {
+          this.set('isEvonGnashblade', false);
+        }
+      },
+
+      observers: [
+        '_calculateTotalCost(quantity, buyPrice)',
+        '_calculateListingFee(quantity, sellPrice)',
+        '_calculateSellingFee(quantity, sellPrice)',
+        '_calculateProfit(listingFee, sellingFee, cost, sellPrice, quantity)'
+      ],
+
+      _calculateTotalCost: function(quantity, buyPrice) {
+        var totalCost = 0;
+
+        totalCost = buyPrice * quantity;
+        this.set('cost', totalCost);
+      },
+
+      _calculateListingFee: function(quantity, sellPrice) {
+        var listingFee = 0;
+
+        listingFee = sellPrice * quantity * 0.05;
+        listingFee = Math.round(listingFee);
+        listingFee = Math.max(listingFee, 1);
+
+        if(this._isZero(sellPrice)) {
+          this.set('listingFee', 0);
+        } else {
+          this.set('listingFee', listingFee);
+        }
+      },
+
+      _calculateSellingFee: function(quantity, sellPrice) {
+        var sellingFee = 0;
+
+        sellingFee = sellPrice * quantity * 0.1;
+
+        sellingFee = Math.round(sellingFee);
+        sellingFee = Math.max(sellingFee, 1)
+
+        if(this._isZero(sellPrice)) {
+          this.set('sellingFee', 0);
+        } else {
+          this.set('sellingFee', sellingFee);
+        }
+      },
+
+      _calculateProfit: function(listingFee, sellingFee, cost, sellPrice, quantity) {
+        var totalProfit = 0;
+
+        totalProfit = (sellPrice * quantity) - listingFee - sellingFee - cost;
+        this.set('profit', totalProfit);
+      },
+
+      _isZero: function(value) {
+        if(value === 0 || value === NaN || value === '') {
+          return true;
+        } 
+
+        return false;
+      },
+
+      changeMode: function() {
+        if(!this.isEvonGnashblade) {
+          return this.set('isEvonGnashblade', true);
+        }
+
+        return this.set('isEvonGnashblade', false);
+      },
+
+      /**
+       * Set Evon Gnashblade Cookie when isEvonGnashblade changes 
+       */
+      _isEvonGnashbladeChanged: function() {
+        this.$.isEvonGnashbladeCookie.createCookie();
+      },
+
+      _isEvonGnashblade: function(bool) {
+        if(bool)
+          return true;
+
+        return false;
+      }
+
+    });
+  </script>
+</dom-module>
