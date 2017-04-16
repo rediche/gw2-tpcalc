@@ -4,7 +4,7 @@
   "main": "gw2-tpcalc.html",
   "dependencies": {
     "polymer": "Polymer/polymer#^1.4.0",
-    "gw2-coin-input": "^0.1.2",
+    "gw2-coin-input": "^1.0.0",
     "gw2-coin-output": "^0.1.2",
     "iron-media-query": "^1.0.8",
     "polymer-cookie": "^1.1.1",
