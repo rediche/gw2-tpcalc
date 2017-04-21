@@ -197,10 +197,9 @@ Renders a paper style Trading Post Calculator for Guild Wars 2.
         super.ready();
 
         var value = localStorage.getItem('isEvonGnashblade');
-        console.log("Value", value);
 
+        // Convert the string to a Boolean value
         var value_check = value == 'true';
-        console.log("Value check", value_check);
 
         this.set('isEvonGnashblade', value_check);
       }
