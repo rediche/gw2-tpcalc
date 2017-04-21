@@ -243,6 +243,26 @@ Renders a paper style Trading Post Calculator for Guild Wars 2.
       _calculateProfit(listingFee, sellingFee, cost, sellPrice, quantity) {
         var totalProfit = 0;
 
+        if (isNaN(listingFee)) {
+          listingFee = 0;
+        }
+
+        if (isNaN(sellingFee)) {
+          sellingFee = 0;
+        }
+
+        if (isNaN(cost)) {
+          cost = 0;
+        }
+
+        if (isNaN(sellPrice)) {
+          sellPrice = 0;
+        }
+
+        if (isNaN(quantity)) {
+          quantity = 0;
+        }
+
         totalProfit = (sellPrice * quantity) - listingFee - sellingFee - cost;
         this.set('profit', totalProfit);
       }
@@ -264,7 +284,6 @@ Renders a paper style Trading Post Calculator for Guild Wars 2.
       }
 
       _isEvonGnashbladeChanged() {
-        console.log("Gnashblade is now:", this.isEvonGnashblade);
         localStorage.setItem('isEvonGnashblade', this.isEvonGnashblade.toString());
       }
 
