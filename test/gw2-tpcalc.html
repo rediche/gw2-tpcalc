@@ -48,6 +48,11 @@
         assert.equal(element.sellingFee, 2000);
       });
 
+      test('can be evon gnashblade mode', function () {
+        assert.isNotOk(element.evonGnashblade);
+        element.evonGnashblade = true;
+        assert.isOk(element.evonGnashblade);
+      });
     });
   </script>
 </body>
