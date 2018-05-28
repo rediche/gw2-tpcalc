@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+  <title>gw2-tpcalc test</title>
+
+  <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
+  <script src="../node_modules/wct-browser-legacy/browser.js"></script>
+  <script type="module" src="../gw2-tpcalc.js"></script>
+
+</head>
+
+<body>
+  <test-fixture id="basic">
+    <template>
+      <gw2-tpcalc></gw2-tpcalc>
+    </template>
+  </test-fixture>
+
+  <script type="module">
+    suite('gw2-tpcalc', function () {
+      let element;
+
+      setup(function () {
+        element = fixture('basic');
+      });
+
+      test('instantiating the element works', function () {
+        assert.equal(element.tagName, 'GW2-TPCALC');
+      });
+    });
+  </script>
+</body>
+
+</html>

@@ -1,10 +1,8 @@
-import { PolymerElement, html } from "@polymer/polymer/polymer-element.js";
-import "@polymer/polymer/polymer-legacy.js";
-
-import { GestureEventListeners } from "@polymer/polymer/lib/mixins/gesture-event-listeners.js";
-import "gw2-coin-input/gw2-coin-input.js";
-import "gw2-coin-output/gw2-coin-output.js";
-import "@polymer/iron-media-query/iron-media-query.js";
+import { PolymerElement, html } from "@polymer/polymer/polymer-element";
+import { GestureEventListeners } from "@polymer/polymer/lib/mixins/gesture-event-listeners";
+import "@polymer/iron-media-query/iron-media-query";
+import "gw2-coin-input/gw2-coin-input";
+import "gw2-coin-output/gw2-coin-output";
 /**
   `gw2-tpcalc` renders a paper style Trading Post Calculator for Guild Wars 2.
 
@@ -86,7 +84,7 @@ class GW2TPCalc extends GestureEventListeners(PolymerElement) {
 
     <iron-media-query query="(min-width: 600px)" query-matches="{{ isWide }}"></iron-media-query>
 
-    <div class="row" wide-layout\$="{{ isWide }}">
+    <div class="row" wide-layout$="{{ isWide }}">
       <div class="column">
         
         <div class="card">
@@ -133,7 +131,7 @@ class GW2TPCalc extends GestureEventListeners(PolymerElement) {
         </template>
         Evon Gnashblade Mode</span>
     </p>
-`;
+    `;
   }
 
   static get is() {
