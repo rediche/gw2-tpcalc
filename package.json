@@ -14,7 +14,7 @@
     "@polymer/iron-media-query": "^3.0.0-pre.18",
     "@polymer/paper-input": "^3.0.0-pre.18",
     "@polymer/polymer": "^3.0.0",
-    "gw2-coin-input": "^2.0.0",
+    "gw2-coin-input": "^2.0.2",
     "gw2-coin-output": "^2.0.1"
   },
   "devDependencies": {
