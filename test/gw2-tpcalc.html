@@ -31,6 +31,23 @@
       test('instantiating the element works', function () {
         assert.equal(element.tagName, 'GW2-TPCALC');
       });
+
+      test('can calculate proper listing fee', function () {
+        element.sellPrice = 10000;
+        assert.equal(element.listingFee, 500);
+
+        element.quantity = 3;
+        assert.equal(element.listingFee, 1500);
+      });
+
+      test('can calculate proper selling fee', function () {
+        element.sellPrice = 10000;
+        assert.equal(element.sellingFee, 1000);
+
+        element.quantity = 2;
+        assert.equal(element.sellingFee, 2000);
+      });
+
     });
   </script>
 </body>
