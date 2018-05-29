@@ -147,13 +147,16 @@ class GW2TPCalc extends GestureEventListeners(PolymerElement) {
         type: Number
       },
       cost: {
-        type: Number
+        type: Number,
+        computed: '_calculateCost(quantity, buyPrice)'
       },
       listingFee: {
-        type: Number
+        type: Number,
+        computed: '_calculateFee(quantity, sellPrice, 5)'
       },
       sellingFee: {
-        type: Number
+        type: Number,
+        computed: '_calculateFee(quantity, sellPrice, 10)'
       },
       profit: {
         type: Number
@@ -174,9 +177,6 @@ class GW2TPCalc extends GestureEventListeners(PolymerElement) {
 
   static get observers() {
     return [
-      "_calculateTotalCost(quantity, buyPrice)",
-      "_calculateListingFee(quantity, sellPrice)",
-      "_calculateSellingFee(quantity, sellPrice)",
       "_calculateProfit(listingFee, sellingFee, cost, sellPrice, quantity)"
     ];
   }
@@ -192,27 +192,13 @@ class GW2TPCalc extends GestureEventListeners(PolymerElement) {
     this.set("isEvonGnashblade", value_check);
   }
 
-  _calculateTotalCost(quantity, buyPrice) {
-    var totalCost = 0;
-
-    totalCost = buyPrice * quantity;
-    this.set("cost", totalCost);
+  _calculateCost(quantity, buyPrice) {
+    return quantity * buyPrice;
   }
 
   _calculateFee(quantity, price, tax) {
-    return Math.max(Math.round(price * quantity * (tax / 100)), 1);
-  }
-
-  _calculateListingFee(quantity, sellPrice) {
-    if (this._isZero(sellPrice)) return this.set("listingFee", 0);
-    let listingFee = this._calculateFee(quantity, sellPrice, 5);
-    this.set("listingFee", listingFee);
-  }
-
-  _calculateSellingFee(quantity, sellPrice) {
-    if (this._isZero(sellPrice)) return this.set("sellingFee", 0);
-    let sellingFee = this._calculateFee(quantity, sellPrice, 10);
-    this.set("sellingFee", sellingFee);
+    if (this._isZero(price) || !quantity) return 0;
+    return Math.max(Math.round(quantity * price * (tax / 100)), 1);
   }
 
   _calculateProfit(listingFee, sellingFee, cost, sellPrice, quantity) {

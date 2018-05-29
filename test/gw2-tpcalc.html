@@ -32,6 +32,12 @@
         assert.equal(element.tagName, 'GW2-TPCALC');
       });
 
+      test('can calculate cost', function () {
+        element.buyPrice = 1337;
+        element.quantity = 3;
+        assert.equal(element.cost, 4011);
+      });
+
       test('can calculate proper listing fee', function () {
         element.sellPrice = 10000;
         assert.equal(element.listingFee, 500);
@@ -56,6 +62,12 @@
       test('selling fee is 0 if sell price is 0', function () {
         element.sellPrice = 0;
         assert.equal(element.sellingFee, 0);
+      });
+
+      test('returns proper fees if quantity is 0', function () {
+        element.sellPrice = 10000;
+        element.quantity = 0;
+        assert.equal(element.listingFee, 0);
       });
 
       test('can be evon gnashblade mode', function () {
