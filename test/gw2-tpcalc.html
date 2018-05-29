@@ -40,6 +40,11 @@
         assert.equal(element.listingFee, 1500);
       });
 
+      test('listing fee is 0 if sell price is 0', function () {
+        element.sellPrice = 0;
+        assert.equal(element.listingFee, 0);
+      });
+
       test('can calculate proper selling fee', function () {
         element.sellPrice = 10000;
         assert.equal(element.sellingFee, 1000);
@@ -48,11 +53,17 @@
         assert.equal(element.sellingFee, 2000);
       });
 
+      test('selling fee is 0 if sell price is 0', function () {
+        element.sellPrice = 0;
+        assert.equal(element.sellingFee, 0);
+      });
+
       test('can be evon gnashblade mode', function () {
         assert.isNotOk(element.evonGnashblade);
         element.evonGnashblade = true;
         assert.isOk(element.evonGnashblade);
       });
+
     });
   </script>
 </body>

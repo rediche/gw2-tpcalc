@@ -199,32 +199,20 @@ class GW2TPCalc extends GestureEventListeners(PolymerElement) {
     this.set("cost", totalCost);
   }
 
+  _calculateFee(quantity, price, tax) {
+    return Math.max(Math.round(price * quantity * (tax / 100)), 1);
+  }
+
   _calculateListingFee(quantity, sellPrice) {
-    var listingFee = 0;
-
-    listingFee = sellPrice * quantity * 0.05;
-    listingFee = Math.round(listingFee);
-    listingFee = Math.max(listingFee, 1);
-
-    if (this._isZero(sellPrice)) {
-      this.set("listingFee", 0);
-    } else {
-      this.set("listingFee", listingFee);
-    }
+    if (this._isZero(sellPrice)) return this.set("listingFee", 0);
+    let listingFee = this._calculateFee(quantity, sellPrice, 5);
+    this.set("listingFee", listingFee);
   }
 
   _calculateSellingFee(quantity, sellPrice) {
-    var sellingFee = 0;
-
-    sellingFee = sellPrice * quantity * 0.1;
-    sellingFee = Math.round(sellingFee);
-    sellingFee = Math.max(sellingFee, 1);
-
-    if (this._isZero(sellPrice)) {
-      this.set("sellingFee", 0);
-    } else {
-      this.set("sellingFee", sellingFee);
-    }
+    if (this._isZero(sellPrice)) return this.set("sellingFee", 0);
+    let sellingFee = this._calculateFee(quantity, sellPrice, 10);
+    this.set("sellingFee", sellingFee);
   }
 
   _calculateProfit(listingFee, sellingFee, cost, sellPrice, quantity) {
