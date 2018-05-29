@@ -14,13 +14,12 @@ class GW2TPCalc extends GestureEventListeners(PolymerElement) {
     return html`
     <style>
       :host {
-        display: block;        
+        display: block;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
       }
 
       h2 {
-        text-transform: uppercase;
         font-size: 1rem;
-        font-weight: 100;
         margin: 0;
       }
 
@@ -40,17 +39,21 @@ class GW2TPCalc extends GestureEventListeners(PolymerElement) {
       }
 
       .row[wide-layout] .column {
-        flex-basis: calc(50% - .5rem);
+        flex-basis: calc(66% - .5rem);
+      }
+
+      .row[wide-layout] .column:last-child {
+        flex-basis: calc(33% - .5rem);
       }
 
       .card {
         background-color: var(--gw2-tpcalc-card-background-color, #EEEEEE);
-        border-radius: .1rem;
+        border-radius: 2px;
         box-shadow: 0 1px 3px rgba(0,0,0,0.12), 
                     0 1px 2px rgba(0,0,0,0.24);
         color: var(--gw2-tpcalc-card-color, #000000);
         margin-bottom: 1rem;
-        padding: .5rem;
+        padding: 1rem 1rem .75rem;
       }
 
       .card p:last-child {
@@ -68,18 +71,6 @@ class GW2TPCalc extends GestureEventListeners(PolymerElement) {
       .results p:first-of-type {
         margin-top: 1rem;
       }
-
-      .changemode {
-        text-align: center;
-        margin-top: 0;
-      }
-
-      .changemode span {
-        font-size: 80%;
-        text-decoration: underline;
-        cursor: pointer;
-      }
-
     </style>
 
     <iron-media-query query="(min-width: 600px)" query-matches="{{ isWide }}"></iron-media-query>
@@ -120,17 +111,6 @@ class GW2TPCalc extends GestureEventListeners(PolymerElement) {
 
       </div>
     </div>
-
-    <p class="changemode">
-      <span on-tap="changeMode">
-        <template is="dom-if" if="{{ !_isEvonGnashblade(isEvonGnashblade) }}">
-          Enable
-        </template>
-        <template is="dom-if" if="{{ _isEvonGnashblade(isEvonGnashblade) }}">
-          Disable
-        </template>
-        Evon Gnashblade Mode</span>
-    </p>
     `;
   }
 
@@ -168,23 +148,12 @@ class GW2TPCalc extends GestureEventListeners(PolymerElement) {
       },
       isEvonGnashblade: {
         type: Boolean,
-        observer: "_isEvonGnashbladeChanged"
+        value: false
       },
       isWide: {
         type: Boolean
       }
     };
-  }
-
-  ready() {
-    super.ready();
-
-    var value = localStorage.getItem("isEvonGnashblade");
-
-    // Convert the string to a Boolean value
-    var value_check = value == "true";
-
-    this.set("isEvonGnashblade", value_check);
   }
 
   /**
@@ -256,10 +225,6 @@ class GW2TPCalc extends GestureEventListeners(PolymerElement) {
     }
 
     return this.set("isEvonGnashblade", false);
-  }
-
-  _isEvonGnashbladeChanged() {
-    localStorage.setItem("isEvonGnashblade", this.isEvonGnashblade.toString());
   }
 
   _isEvonGnashblade(bool) {
