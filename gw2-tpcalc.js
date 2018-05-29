@@ -159,7 +159,8 @@ class GW2TPCalc extends GestureEventListeners(PolymerElement) {
         computed: "_calculateFee(quantity, sellPrice, 10)"
       },
       profit: {
-        type: Number
+        type: Number,
+        computed: "_calculateProfit(listingFee, sellingFee, cost, sellPrice, quantity)"
       },
       quantity: {
         type: Number,
@@ -175,12 +176,6 @@ class GW2TPCalc extends GestureEventListeners(PolymerElement) {
     };
   }
 
-  static get observers() {
-    return [
-      "_calculateProfit(listingFee, sellingFee, cost, sellPrice, quantity)"
-    ];
-  }
-
   ready() {
     super.ready();
 
@@ -192,18 +187,38 @@ class GW2TPCalc extends GestureEventListeners(PolymerElement) {
     this.set("isEvonGnashblade", value_check);
   }
 
+  /**
+   * Calculates the cost by multiplying quantity and buyPrice.
+   * @returns {number}
+   * @param {number} quantity
+   * @param {number} buyPrice
+   */
   _calculateCost(quantity, buyPrice) {
     return quantity * buyPrice;
   }
 
+  /**
+   * Calculate a fee. Tax is a percentage.
+   * @returns {number}
+   * @param {number} quantity 
+   * @param {number} price 
+   * @param {number} tax 
+   */
   _calculateFee(quantity, price, tax) {
     if (this._isZero(price) || !quantity) return 0;
     return Math.max(Math.round(quantity * price * (tax / 100)), 1);
   }
 
+  /**
+   * Calculate the profit
+   * @returns {number}
+   * @param {number} listingFee 
+   * @param {number} sellingFee 
+   * @param {number} cost 
+   * @param {number} sellPrice 
+   * @param {number} quantity 
+   */
   _calculateProfit(listingFee, sellingFee, cost, sellPrice, quantity) {
-    var totalProfit = 0;
-
     if (isNaN(listingFee)) {
       listingFee = 0;
     }
@@ -224,8 +239,7 @@ class GW2TPCalc extends GestureEventListeners(PolymerElement) {
       quantity = 0;
     }
 
-    totalProfit = sellPrice * quantity - listingFee - sellingFee - cost;
-    this.set("profit", totalProfit);
+    return (sellPrice * quantity) - listingFee - sellingFee - cost;
   }
 
   _isZero(value) {

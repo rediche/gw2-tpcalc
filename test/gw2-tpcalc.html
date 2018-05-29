@@ -38,6 +38,13 @@
         assert.equal(element.cost, 4011);
       });
 
+      test('can calculate profit', function () {
+        element.buyPrice = 123;
+        element.sellPrice = 345;
+        element.quantity = 100;
+        assert.equal(element.profit, 17025);
+      });
+
       test('can calculate proper listing fee', function () {
         element.sellPrice = 10000;
         assert.equal(element.listingFee, 500);
