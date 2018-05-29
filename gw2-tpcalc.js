@@ -148,15 +148,15 @@ class GW2TPCalc extends GestureEventListeners(PolymerElement) {
       },
       cost: {
         type: Number,
-        computed: '_calculateCost(quantity, buyPrice)'
+        computed: "_calculateCost(quantity, buyPrice)"
       },
       listingFee: {
         type: Number,
-        computed: '_calculateFee(quantity, sellPrice, 5)'
+        computed: "_calculateFee(quantity, sellPrice, 5)"
       },
       sellingFee: {
         type: Number,
-        computed: '_calculateFee(quantity, sellPrice, 10)'
+        computed: "_calculateFee(quantity, sellPrice, 10)"
       },
       profit: {
         type: Number
