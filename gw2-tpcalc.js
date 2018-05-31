@@ -1,15 +1,16 @@
 import { PolymerElement, html } from "@polymer/polymer/polymer-element";
-import { GestureEventListeners } from "@polymer/polymer/lib/mixins/gesture-event-listeners";
 import "@polymer/iron-media-query/iron-media-query";
 import "gw2-coin-input/gw2-coin-input";
 import "gw2-coin-output/gw2-coin-output";
+import "./gw2-tpcalc-core";
+
 /**
   `gw2-tpcalc` renders a paper style Trading Post Calculator for Guild Wars 2.
 
   @element gw2-tpcalc
   @demo demo/index.html 
 */
-class GW2TPCalc extends GestureEventListeners(PolymerElement) {
+class GW2TPCalc extends PolymerElement {
   static get template() {
     return html`
     <style>
@@ -73,6 +74,15 @@ class GW2TPCalc extends GestureEventListeners(PolymerElement) {
       }
     </style>
 
+    <gw2-tpcalc-core
+      buy-price="{{buyPrice}}"
+      sell-price="{{sellPrice}}"
+      cost="{{cost}}"
+      listing-fee="{{listingFee}}"
+      selling-fee="{{sellingFee}}"
+      profit="{{profit}}"
+      quantity="{{quantity}}"></gw2-tpcalc-core>
+
     <iron-media-query query="(min-width: 600px)" query-matches="{{ isWide }}"></iron-media-query>
 
     <div class="row" wide-layout$="{{ isWide }}">
@@ -127,24 +137,19 @@ class GW2TPCalc extends GestureEventListeners(PolymerElement) {
         type: Number
       },
       cost: {
-        type: Number,
-        computed: "_calculateCost(quantity, buyPrice)"
+        type: Number
       },
       listingFee: {
-        type: Number,
-        computed: "_calculateFee(quantity, sellPrice, 5)"
+        type: Number
       },
       sellingFee: {
-        type: Number,
-        computed: "_calculateFee(quantity, sellPrice, 10)"
+        type: Number
       },
       profit: {
-        type: Number,
-        computed: "_calculateProfit(listingFee, sellingFee, cost, sellPrice, quantity)"
+        type: Number
       },
       quantity: {
-        type: Number,
-        value: 1
+        type: Number
       },
       isEvonGnashblade: {
         type: Boolean,
@@ -154,69 +159,6 @@ class GW2TPCalc extends GestureEventListeners(PolymerElement) {
         type: Boolean
       }
     };
-  }
-
-  /**
-   * Calculates the cost by multiplying quantity and buyPrice.
-   * @returns {number}
-   * @param {number} quantity
-   * @param {number} buyPrice
-   */
-  _calculateCost(quantity, buyPrice) {
-    return quantity * buyPrice;
-  }
-
-  /**
-   * Calculate a fee. Tax is a percentage.
-   * @returns {number}
-   * @param {number} quantity 
-   * @param {number} price 
-   * @param {number} tax 
-   */
-  _calculateFee(quantity, price, tax) {
-    if (this._isZero(price) || !quantity) return 0;
-    return Math.max(Math.round(quantity * price * (tax / 100)), 1);
-  }
-
-  /**
-   * Calculate the profit
-   * @returns {number}
-   * @param {number} listingFee 
-   * @param {number} sellingFee 
-   * @param {number} cost 
-   * @param {number} sellPrice 
-   * @param {number} quantity 
-   */
-  _calculateProfit(listingFee, sellingFee, cost, sellPrice, quantity) {
-    if (isNaN(listingFee)) {
-      listingFee = 0;
-    }
-
-    if (isNaN(sellingFee)) {
-      sellingFee = 0;
-    }
-
-    if (isNaN(cost)) {
-      cost = 0;
-    }
-
-    if (isNaN(sellPrice)) {
-      sellPrice = 0;
-    }
-
-    if (isNaN(quantity)) {
-      quantity = 0;
-    }
-
-    return (sellPrice * quantity) - listingFee - sellingFee - cost;
-  }
-
-  _isZero(value) {
-    if (value === 0 || value === NaN || value === "") {
-      return true;
-    }
-
-    return false;
   }
 
   changeMode() {
