@@ -19,6 +19,10 @@ class GW2TPCalc extends PolymerElement {
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
       }
 
+      :host([hidden]) {
+        display: none;
+      }
+
       h2 {
         font-size: 1rem;
         margin: 0;
