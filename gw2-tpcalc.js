@@ -75,8 +75,8 @@ class GW2TPCalc extends PolymerElement {
     </style>
 
     <gw2-tpcalc-core
-      buy-price="{{buyPrice}}"
-      sell-price="{{sellPrice}}"
+      buy-price="[[buyPrice]]"
+      sell-price="[[sellPrice]]"
       cost="{{cost}}"
       listing-fee="{{listingFee}}"
       selling-fee="{{sellingFee}}"
