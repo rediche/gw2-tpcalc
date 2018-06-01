@@ -32,55 +32,20 @@
         assert.equal(element.tagName, 'GW2-TPCALC');
       });
 
-      test('can calculate cost', function () {
-        element.buyPrice = 1337;
-        element.quantity = 3;
-        assert.equal(element.cost, 4011);
-      });
-
-      test('can calculate profit', function () {
-        element.buyPrice = 123;
-        element.sellPrice = 345;
-        element.quantity = 100;
-        assert.equal(element.profit, 17025);
-      });
-
-      test('can calculate proper listing fee', function () {
-        element.sellPrice = 10000;
-        assert.equal(element.listingFee, 500);
-
-        element.quantity = 3;
-        assert.equal(element.listingFee, 1500);
-      });
-
-      test('listing fee is 0 if sell price is 0', function () {
-        element.sellPrice = 0;
-        assert.equal(element.listingFee, 0);
-      });
-
-      test('can calculate proper selling fee', function () {
-        element.sellPrice = 10000;
-        assert.equal(element.sellingFee, 1000);
-
-        element.quantity = 2;
-        assert.equal(element.sellingFee, 2000);
-      });
-
-      test('selling fee is 0 if sell price is 0', function () {
-        element.sellPrice = 0;
-        assert.equal(element.sellingFee, 0);
-      });
-
-      test('returns proper fees if quantity is 0', function () {
-        element.sellPrice = 10000;
-        element.quantity = 0;
-        assert.equal(element.listingFee, 0);
-      });
-
       test('can be evon gnashblade mode', function () {
         assert.isNotOk(element.evonGnashblade);
         element.evonGnashblade = true;
         assert.isOk(element.evonGnashblade);
+      });
+
+      test('buy price is bound correctly', function () {
+        element.buyPrice = 1337;
+        assert.equal(element.shadowRoot.querySelector('gw2-tpcalc-core').buyPrice, 1337);
+      });
+
+      test('sell price is bound correctly', function () {
+        element.sellPrice = 1995;
+        assert.equal(element.shadowRoot.querySelector('gw2-tpcalc-core').sellPrice, 1995);
       });
 
     });
