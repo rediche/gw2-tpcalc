@@ -38,6 +38,16 @@
         assert.isOk(element.evonGnashblade);
       });
 
+      test('buy price is bound correctly', function () {
+        element.buyPrice = 1337;
+        assert.equal(element.shadowRoot.querySelector('gw2-tpcalc-core').buyPrice, 1337);
+      });
+
+      test('sell price is bound correctly', function () {
+        element.sellPrice = 1995;
+        assert.equal(element.shadowRoot.querySelector('gw2-tpcalc-core').sellPrice, 1995);
+      });
+
     });
   </script>
 </body>
